@@ -1,0 +1,25 @@
+.Backdrop {
+  width: 100vw;
+  top: 0;
+  z-index: -1;
+}
+
+.Backdrop div {
+    background-color: #5A39A3;
+    height: 1000px;
+    position:fixed;
+    width: 2000px;
+    top: -500px;
+    z-index: -1;
+}
+
+.left {
+    transform: rotate(20deg);
+    left: 30vw;
+}
+
+.right {
+    transform: rotate(-20deg);
+    background-color: #5A39A3;
+    right: 30vw;
+}

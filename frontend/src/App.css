@@ -1,0 +1,35 @@
+body {
+  margin: 0;
+  padding: 0;
+  padding-bottom: 20px;
+  font-family: Roboto;
+}
+
+.App {
+  margin: 0
+}
+
+.container {
+  width: 1200px;
+  display: flex;
+  flex-direction: column;
+  /* padding-top: 80px; */
+  margin: 60px auto 0 auto;
+  min-height: 100vh;
+
+}
+
+:root {
+  --main-bg-color: #482D52;
+  --main-secondary-color: #5A39A3;
+  --main-font-color: #ffffff;
+  --main-container-width: 1200px;
+  --main-success-color: #509E62;
+  --main-danger-color: #D02424;
+
+}
+
+* {
+  box-sizing: border-box;
+}
+

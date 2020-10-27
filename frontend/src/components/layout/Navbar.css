@@ -1,0 +1,33 @@
+.Navbar {
+  width: 100vw;
+  height: 60px;
+  background-color: var(--main-bg-color);
+  color: var(--main-font-color);
+  display: flex;
+  align-items: center;
+  position: fixed;
+  top:0;
+  display: flex;
+  justify-content: center;
+}
+
+.Navbar a {
+  color: #FFF
+}
+
+.Navbar a:visited {
+  color: #FFF
+}
+
+.Navbar h1 {
+  margin: 0;
+  padding: 10px;
+  font-family: Rajdhani;
+  text-transform: uppercase;
+  display: inline;
+}
+
+.wrapper {
+  width: 1200px;
+}
+

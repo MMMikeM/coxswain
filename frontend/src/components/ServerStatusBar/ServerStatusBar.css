@@ -1,0 +1,42 @@
+.ServerStatusBar {
+  border-radius: 0px 0px 10px 10px;
+  color: var(--main-font-color);
+  padding: 0 42px;
+  position: sticky;
+  margin: 0 auto;
+  width: var(--main-container-width);
+  height: 50px;
+  top: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.running{
+  background-color: var(--main-success-color);
+}
+
+.stopped{
+  background-color: var(--main-danger-color);
+}
+
+.processing{
+  background-color: var(--main-bg-color);
+}
+
+.flex {
+  display: flex;
+  align-items: center;
+  align-self: center;
+}
+
+.ServerStatusBar a {
+  cursor: pointer;
+}
+
+.ServerStatusBar a:link{
+  color: white;
+}
+.ServerStatusBar a:visited{
+  color: white;
+}
