@@ -13,12 +13,40 @@ class ConfigGenerator
     current_version = File.read('current_version.txt').strip.to_i
     new_version = current_version + 1
 
+    new_config << base_config
 		joined_config = new_config.join("\n#---\n")
     joined_upstreams = converted_upstreams.join("\n#---\n")
     new_config = [joined_config, joined_upstreams].compact.join("\n#---\n")
     File.write("versions/#{new_version}", new_config)
     File.write(@config_file_name, new_config)
     File.write('current_version.txt', new_version.to_s)
+  end
+
+  def base_config
+    config = [
+      "server {",
+      "  listen 80;",
+      "  listen [::]:80;",
+      "  server_name localhost;",
+      "  client_max_body_size 0;",
+      "  location / {",
+      "    root                /var/www/root/html;",
+      "    proxy_set_header    Host                $http_host;",
+      "    proxy_set_header    X-Real-IP           $remote_addr;",
+      "    proxy_set_header    X-Forwarded-For     $proxy_add_x_forwarded_for;",
+      "    proxy_set_header    Upgrade             $http_upgrade;",
+      "    proxy_set_header    Connection          'Upgrade';",
+      "  }",
+      "  location /api/v1/ {",
+      "    proxy_pass          http://127.0.0.1:3000;",
+      "    proxy_set_header    Host                $http_host;",
+      "    proxy_set_header    X-Real-IP           $remote_addr;",
+      "    proxy_set_header    X-Forwarded-For     $proxy_add_x_forwarded_for;",
+      "    proxy_set_header    Upgrade             $http_upgrade;",
+      "    proxy_set_header    Connection          'Upgrade';",
+      "  }",
+      "}\n"
+    ].compact.join("\n")
   end
 
   def converted_upstreams
@@ -55,6 +83,14 @@ class ConfigGenerator
     config.join("\n")
   end
 
+  def proxy_pass(config)
+    if config['root']
+      ""
+    else
+      "    proxy_pass #{config['url']}"
+    end
+  end
+
   def convert_to_basic_nginx_config(config)
     ssl_certificate = config['ssl_certificate'] || ENV['SSL_CERTIFICATE']
     ssl_certificate_key = config['ssl_certificate_key'] || ENV['SSL_CERTIFICATE_KEY']
@@ -82,23 +118,29 @@ class ConfigGenerator
       ].join("\n")
     end
 
+    root = ""
+    if config["root"]
+      root = "  root #{config['root']};";
+    end
+
     config = [
       "server {",
       listen,
       "  listen [::]:#{config['exposed_port']};",
       "  server_name #{config['url']};",
+      root,
       ssl_cert,
       basic_auth,
       "  client_max_body_size 0;",
       "  location / {",
-      "    proxy_pass #{url}",
+      proxy_pass(config),
       "    proxy_set_header    Host                $http_host;",
       "    proxy_set_header    X-Real-IP           $remote_addr;",
       "    proxy_set_header    X-Forwarded-For     $proxy_add_x_forwarded_for;",
       "    proxy_set_header    Upgrade             $http_upgrade;",
       "    proxy_set_header    Connection          'Upgrade';",
       "  }",
-    "}\n"
-    ].join("\n")
+      "}\n"
+    ].compact.join("\n")
   end
 end

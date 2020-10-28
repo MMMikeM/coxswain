@@ -40,7 +40,7 @@ class SinatraApp < Sinatra::Base
     'OK'
   end
 
-  get '/nginx/start' do
+  get '/api/v1/nginx/start' do
     content_type :json
     authenticate(params[:token])
     response = `service nginx start`
@@ -50,7 +50,7 @@ class SinatraApp < Sinatra::Base
     }.to_json
   end
 
-  get '/nginx/stop' do
+  get '/api/v1/nginx/stop' do
     content_type :json
     authenticate(params[:token])
     response = `service nginx stop`
@@ -60,7 +60,7 @@ class SinatraApp < Sinatra::Base
     }.to_json
   end
 
-  get '/nginx/restart' do
+  get '/api/v1/nginx/restart' do
     content_type :json
     authenticate(params[:token])
     response = `service nginx restart`
@@ -70,7 +70,7 @@ class SinatraApp < Sinatra::Base
     }.to_json
   end
 
-  get '/nginx/status' do
+  get '/api/v1/nginx/status' do
     content_type :json
     authenticate(params[:token])
     response = `service nginx status`
@@ -88,13 +88,13 @@ class SinatraApp < Sinatra::Base
     end
   end
 
-  get '/nginx/config' do
+  get '/api/v1/nginx/config' do
     content_type :json
     authenticate(params[:token])
     render_current_config
   end
 
-  put '/nginx/config' do
+  put '/api/v1/nginx/config' do
     content_type :json
     authenticate(params[:token])
     parsed_body = JSON.parse(request.body.read)
@@ -104,14 +104,14 @@ class SinatraApp < Sinatra::Base
     render_current_config
   end
 
-  get '/nginx/rollback' do
+  get '/api/v1/nginx/rollback' do
     content_type :json
     authenticate(params[:token])
     ConfigGenerator.new(CONFIG_FILE_NAME, []).rollback
     render_current_config
   end
 
-  get '/nginx/logs' do
+  get '/api/v1/nginx/logs' do
     content_type :json
     authenticate(params[:token])
     logs = {}
