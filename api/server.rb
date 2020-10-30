@@ -75,7 +75,7 @@ class SinatraApp < Sinatra::Base
     authenticate(params[:token])
     response = `service nginx status`
 
-    if response == "nginx is running.\n"
+    if response == "started\n"
       {
         console: response,
         status: 'running'
